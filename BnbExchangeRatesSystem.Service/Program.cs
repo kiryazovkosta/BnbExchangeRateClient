@@ -1,13 +1,26 @@
 using BnbExchangeRatesSystem.Service;
 using BnbExchangeRatesSystem.Service.Extensions;
+using BnbExchangeRatesSystem.Service.Services;
+using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Logging.EventLog;
 
-IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
-    {
-        services
-            .AddHostedService<WindowsBackgroundService>()
-            .AddServices();
-    })
-    .Build();
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+builder.Services.AddWindowsService(options =>
+{
+    options.ServiceName = "Bnb ExchangeRates Service";
+});
 
+if (OperatingSystem.IsWindows())
+{
+    LoggerProviderOptions.RegisterProviderOptions<EventLogSettings, EventLogLoggerProvider>(builder.Services);
+}
+
+builder.Services.AddSingleton<JokeService>();
+builder.Services.AddHostedService<WindowsBackgroundService>();
+builder.Services.AddServices();
+
+builder.Logging.AddConfiguration(
+    builder.Configuration.GetSection("Logging"));
+
+IHost host = builder.Build();
 host.Run();

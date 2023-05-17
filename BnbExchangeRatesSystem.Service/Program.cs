@@ -1,6 +1,5 @@
 using BnbExchangeRatesSystem.Service;
 using BnbExchangeRatesSystem.Service.Extensions;
-using BnbExchangeRatesSystem.Service.Services;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Logging.EventLog;
 
@@ -15,7 +14,7 @@ if (OperatingSystem.IsWindows())
     LoggerProviderOptions.RegisterProviderOptions<EventLogSettings, EventLogLoggerProvider>(builder.Services);
 }
 
-builder.Services.AddSingleton<JokeService>();
+builder.Services.AddHttpClient();
 builder.Services.AddHostedService<WindowsBackgroundService>();
 builder.Services.AddServices();
 

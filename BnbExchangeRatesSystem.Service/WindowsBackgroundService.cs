@@ -4,17 +4,17 @@ namespace BnbExchangeRatesSystem.Service;
 
 public sealed class WindowsBackgroundService : BackgroundService
 {
-    private readonly IJokeService _jokeService;
+    private readonly IExchangeRatesService _exchangeRatesService;
     private readonly ILogger<WindowsBackgroundService> _logger;
 
     public WindowsBackgroundService(
-        IJokeService jokeService,
+        IExchangeRatesService exchangeRatesService,
         ILogger<WindowsBackgroundService> logger)
     {
-        ArgumentNullException.ThrowIfNullOrEmpty(nameof(jokeService));
+        ArgumentNullException.ThrowIfNullOrEmpty(nameof(exchangeRatesService));
         ArgumentNullException.ThrowIfNullOrEmpty(nameof(logger));
-        
-        _jokeService = jokeService;
+
+        _exchangeRatesService = exchangeRatesService;
         _logger = logger;
     }
 
@@ -24,8 +24,12 @@ public sealed class WindowsBackgroundService : BackgroundService
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                string joke = this._jokeService.GetJoke();
-                _logger.LogWarning("{Joke}", joke);
+                var rates = await this._exchangeRatesService.GetRates(stoppingToken);
+                if (rates is not null)
+                {
+                    rates.ToList().ForEach(rate => _logger.LogWarning("{Exchange Rates}", rate));
+                }
+                _logger.LogWarning("{Exchange Rates}", rates);
 
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }

@@ -1,10 +1,10 @@
 namespace BnbExchangeRatesSystem.Service;
 
-public class Worker : BackgroundService
+public sealed class WindowsBackgroundService : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
+    private readonly ILogger<WindowsBackgroundService> _logger;
 
-    public Worker(ILogger<Worker> logger)
+    public WindowsBackgroundService(ILogger<WindowsBackgroundService> logger)
     {
         _logger = logger;
     }

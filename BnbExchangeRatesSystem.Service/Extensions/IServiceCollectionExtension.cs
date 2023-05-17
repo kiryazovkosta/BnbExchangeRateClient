@@ -7,7 +7,7 @@ public static class IServiceCollectionExtension
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddScoped<IJokeService, JokeService>();
+        services.AddSingleton<IJokeService, JokeService>();
 
         return services;
     }

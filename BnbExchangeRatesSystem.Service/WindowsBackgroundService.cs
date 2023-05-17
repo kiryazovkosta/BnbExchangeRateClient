@@ -25,7 +25,7 @@ public sealed class WindowsBackgroundService : BackgroundService
             while (!stoppingToken.IsCancellationRequested)
             {
                 string joke = this._jokeService.GetJoke();
-                _logger.LogWarning("{Joke", joke);
+                _logger.LogWarning("{Joke}", joke);
 
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }

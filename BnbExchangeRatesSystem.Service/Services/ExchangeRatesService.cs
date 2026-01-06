@@ -27,9 +27,17 @@ public class ExchangeRatesService : IExchangeRatesService
     public async Task<IEnumerable<DailyExchangeRate>> GetRates(CancellationToken cancellationToken)
     {
         var client = this._httpClientFactory.CreateClient();
-        var response = await client.GetAsync("https://www.bnb.bg/Statistics/StExternalSector/StExchangeRates/StERForeignCurrencies/index.htm?download=csv&search=&lang=BG", cancellationToken);
-        var content = await response.Content.ReadAsStringAsync();
-        var rates = this._dailyExchangeRatesService.Convert(content);
-        return rates;
+        using var response = await client.GetAsync(
+            "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+            HttpCompletionOption.ResponseHeadersRead,
+            cancellationToken);
+        if (response.IsSuccessStatusCode)
+        {
+            using var content = await response.Content.ReadAsStreamAsync();
+            var rates = this._dailyExchangeRatesService.Convert(content);
+            return rates;
+        }
+
+        return [];
     }
 }

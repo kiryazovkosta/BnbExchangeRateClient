@@ -7,7 +7,6 @@ public static class IServiceCollectionExtension
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddSingleton<IJokeService, JokeService>();
         services.AddSingleton<IExchangeRatesService, ExchangeRatesService>();
         services.AddSingleton<IDailyExchangeRatesService, DailyExchangeRatesService>();
 

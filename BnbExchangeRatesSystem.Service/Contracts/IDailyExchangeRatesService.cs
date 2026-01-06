@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 public interface IDailyExchangeRatesService
 {
-    IEnumerable<DailyExchangeRate> Convert(string ratesAsString);
+    IEnumerable<DailyExchangeRate> Convert(Stream ratesAsStream);
 }

@@ -9,16 +9,27 @@ public sealed record DailyExchangeRate(
 {
     public override string ToString()
     {
-        return $"{Date:yyyy-MM-dd}\t{Code}\t{RateInBgn}\t\t{RoundTo4SignificantDigits(1.00M/RateInBgn)}{Environment.NewLine}";
+        return $"{Date:yyyy-MM-dd}\t{Code}\t{RateInBgn}\t\t{RoundToSignificantDigits(1.00M / RateInBgn)}{Environment.NewLine}";
     }
 
-    private decimal RoundTo4SignificantDigits(decimal value)
+    private static decimal RoundToSignificantDigits(decimal value)
     {
-        if (value == 0)
-            return 0;
+        if (value == 0m)
+        {
+            return 0m;
+        }
 
-        int scale = (int)Math.Floor(Math.Log10((double)Math.Abs(value)));
-        int decimals = Math.Max(0, 4 - scale - 1);
+
+        var abs = Math.Abs(value);
+
+        if (abs >= 1m)
+        {
+            return Math.Round(value, 4, MidpointRounding.AwayFromZero);
+        }
+
+
+        var scale = (int)Math.Floor(Math.Log10((double)abs));
+        var decimals = Math.Max(0, 4 - scale - 1);
 
         return Math.Round(value, decimals, MidpointRounding.AwayFromZero);
     }

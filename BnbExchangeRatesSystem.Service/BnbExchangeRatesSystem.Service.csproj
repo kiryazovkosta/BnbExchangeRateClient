@@ -17,4 +17,8 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.11" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.11" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="BnbExchangeRatesSystem.Service.Tests\" />
+	</ItemGroup>
 </Project>
